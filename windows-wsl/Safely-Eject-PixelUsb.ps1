@@ -9,6 +9,19 @@ $usbId = '0951:173c'
 $mountPoint = '/mnt/pixel-usb'
 $usbipdPath = 'C:\Program Files\usbipd-win\usbipd.exe'
 
+function ConvertTo-WslDrivePath {
+    param([Parameter(Mandatory)][string]$WindowsPath)
+
+    $fullPath = [System.IO.Path]::GetFullPath($WindowsPath)
+    if ($fullPath -notmatch '^(?<drive>[A-Za-z]):\\(?<tail>.*)$') {
+        throw "The helper must be stored on a Windows drive: $fullPath"
+    }
+
+    $drive = $Matches.drive.ToLowerInvariant()
+    $tail = $Matches.tail -replace '\\', '/'
+    "/mnt/$drive/$tail"
+}
+
 if (-not (Test-Path -LiteralPath $usbipdPath)) {
     throw "usbipd-win is not installed at $usbipdPath"
 }
@@ -18,10 +31,7 @@ if (-not (Test-Path -LiteralPath $linuxScriptWindowsPath)) {
     throw "Missing Linux helper: $linuxScriptWindowsPath"
 }
 
-$linuxScriptPath = (& wsl.exe -d $Distro -- wslpath -a $linuxScriptWindowsPath).Trim()
-if ($LASTEXITCODE -ne 0 -or -not $linuxScriptPath) {
-    throw 'Could not translate the Linux helper path for WSL.'
-}
+$linuxScriptPath = ConvertTo-WslDrivePath -WindowsPath $linuxScriptWindowsPath
 
 & wsl.exe -d $Distro -u root -- sh $linuxScriptPath $mountPoint
 if ($LASTEXITCODE -ne 0) {

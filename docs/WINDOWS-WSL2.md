@@ -44,7 +44,7 @@ It starts Ubuntu, attaches the shared USB device to WSL, waits for the expected 
 
 The Linux location is `/mnt/pixel-usb/the_binding`. Do not accept any Windows format prompt.
 
-The PowerShell launchers invoke the checked-in `windows-wsl/linux/*.sh` helpers directly. Git stores those helpers with LF line endings, avoiding CRLF characters being interpreted as shell options by Ubuntu's `/bin/sh`.
+The PowerShell launchers invoke the checked-in `windows-wsl/linux/*.sh` helpers directly. Git stores those helpers with LF line endings, avoiding CRLF characters being interpreted as shell options by Ubuntu's `/bin/sh`. The launcher converts an ordinary drive path such as `C:\repo\helper.sh` to `/mnt/c/repo/helper.sh` itself, so Windows backslashes never pass through a Linux shell parser.
 
 ## Check status
 
