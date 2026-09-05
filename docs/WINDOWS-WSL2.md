@@ -44,6 +44,8 @@ It starts Ubuntu, attaches the shared USB device to WSL, waits for the expected 
 
 The Linux location is `/mnt/pixel-usb/the_binding`. Do not accept any Windows format prompt.
 
+The PowerShell launchers invoke the checked-in `windows-wsl/linux/*.sh` helpers directly. Git stores those helpers with LF line endings, avoiding CRLF characters being interpreted as shell options by Ubuntu's `/bin/sh`.
+
 ## Check status
 
 Double-click `Status-PixelUsb.cmd`, or run its PowerShell counterpart. It reports the usbipd state plus WSL mount and capacity information when attached.

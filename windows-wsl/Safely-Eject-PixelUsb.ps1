@@ -13,27 +13,17 @@ if (-not (Test-Path -LiteralPath $usbipdPath)) {
     throw "usbipd-win is not installed at $usbipdPath"
 }
 
-$linuxScript = @'
-set -u
-mount_point=$1
+$linuxScriptWindowsPath = Join-Path $PSScriptRoot 'linux\safely-unmount-pixel-usb.sh'
+if (-not (Test-Path -LiteralPath $linuxScriptWindowsPath)) {
+    throw "Missing Linux helper: $linuxScriptWindowsPath"
+}
 
-if mountpoint -q "$mount_point"; then
-  echo 'Synchronizing pending writes...'
-  sync
-  if ! umount "$mount_point"; then
-    echo "ERROR: $mount_point is busy. Close Explorer and applications using it." >&2
-    echo 'Processes reported by Linux:' >&2
-    fuser -vm "$mount_point" >&2 || true
-    exit 30
-  fi
-  sync
-  echo 'The ext4 filesystem is unmounted.'
-else
-  echo 'The ext4 filesystem is already unmounted.'
-fi
-'@
+$linuxScriptPath = (& wsl.exe -d $Distro -- wslpath -a $linuxScriptWindowsPath).Trim()
+if ($LASTEXITCODE -ne 0 -or -not $linuxScriptPath) {
+    throw 'Could not translate the Linux helper path for WSL.'
+}
 
-$linuxScript | & wsl.exe -d $Distro -u root -- sh -s -- $mountPoint
+& wsl.exe -d $Distro -u root -- sh $linuxScriptPath $mountPoint
 if ($LASTEXITCODE -ne 0) {
     throw 'Safe unmount failed. The USB device remains attached; do not unplug it.'
 }
