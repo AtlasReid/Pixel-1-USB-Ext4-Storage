@@ -17,13 +17,23 @@ if is_mounted; then
   exit 0
 fi
 
-device=$(
-  /system/bin/blkid -t UUID="$DRIVE_UUID" 2>/dev/null \
-    | "$BB" awk '{ sub(/:$/, "", $1); print $1; exit }'
-)
+echo 'Waiting up to 20 seconds for the PIXELBACKUP filesystem...'
+device=''
+attempt=0
+while [ "$attempt" -lt 20 ]; do
+  device=$(
+    /system/bin/blkid -t UUID="$DRIVE_UUID" 2>/dev/null \
+      | "$BB" awk '{ sub(/:$/, "", $1); print $1; exit }'
+  )
+  if [ -n "$device" ] && [ -b "$device" ]; then
+    break
+  fi
+  attempt=$((attempt + 1))
+  sleep 1
+done
 
 if [ -z "$device" ] || [ ! -b "$device" ]; then
-  echo 'ERROR: The PIXELBACKUP drive is not connected.'
+  echo 'ERROR: The PIXELBACKUP drive did not appear within 20 seconds.'
   exit 1
 fi
 

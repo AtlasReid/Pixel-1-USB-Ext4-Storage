@@ -23,7 +23,7 @@ adb shell su -c "rm -rf /data/adb/modules/pixel_usb_1_status && cp -a /data/loca
 
 1. **Pixel USB 1 - Status** shows whether the expected filesystem is connected and mounted, its capacity, the mapped Android views, and detected users.
 2. **Pixel USB 2 - Unmount** calls `sync`, normally unmounts the Android mappings and ext4 parent, and refuses to claim success if the parent remains mounted.
-3. **Pixel USB 3 - Mount** locates the partition by UUID, verifies its hardware and filesystem identity, mounts ext4 at `/mnt/my_drive`, and exposes `the_binding` at `/storage/emulated/0/the_binding`.
+3. **Pixel USB 3 - Mount** waits up to 20 seconds for USB enumeration, locates the partition by UUID, verifies its hardware and filesystem identity, mounts ext4 at `/mnt/my_drive`, and exposes `the_binding` at `/storage/emulated/0/the_binding`.
 4. **Pixel USB 4 - Close Users** force-stops ordinary app processes using the mapping. It refuses to kill root or core Android UIDs below 10000.
 5. **Pixel USB 5 - Force Unmount** combines closing app users, syncing, and unmounting every known view. It uses lazy detach only when normal unmount fails and reports when it did so.
 

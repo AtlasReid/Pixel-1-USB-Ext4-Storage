@@ -1,6 +1,6 @@
 id=pixel_usb_3_mount
 name=Pixel USB 3 - Mount
-version=1.0.0
-versionCode=1
+version=1.0.1
+versionCode=2
 author=Reid
-description=Validate and mount the Kingston backup drive at Internal storage/the_binding.
+description=Wait for, validate, and mount the Kingston backup drive at Internal storage/the_binding.
