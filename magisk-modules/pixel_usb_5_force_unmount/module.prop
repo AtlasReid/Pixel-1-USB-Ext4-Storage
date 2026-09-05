@@ -1,0 +1,6 @@
+id=pixel_usb_5_force_unmount
+name=Pixel USB 5 - Force Unmount
+version=1.0.0
+versionCode=1
+author=Reid
+description=Close app users, sync writes, and forcibly detach all Pixel USB storage mappings.

@@ -1,0 +1,17 @@
+# Local artifacts and logs
+*.log
+*.zip
+*.img
+*.apk
+*.tar
+*.tar.gz
+
+# Editor and operating-system metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Never commit locally captured device material
+artifacts/
+device-backups/

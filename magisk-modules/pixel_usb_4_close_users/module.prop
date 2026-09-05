@@ -1,0 +1,6 @@
+id=pixel_usb_4_close_users
+name=Pixel USB 4 - Close Users
+version=1.0.0
+versionCode=1
+author=Reid
+description=Safely close app processes that currently hold files on the Pixel USB drive.

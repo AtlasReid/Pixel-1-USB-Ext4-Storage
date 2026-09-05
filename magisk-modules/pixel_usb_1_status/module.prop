@@ -1,0 +1,6 @@
+id=pixel_usb_1_status
+name=Pixel USB 1 - Status
+version=1.0.0
+versionCode=1
+author=Reid
+description=Show the Kingston backup drive connection, mount, capacity, and active users.
